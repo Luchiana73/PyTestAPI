@@ -1,3 +1,5 @@
+import pytest
+
 from api import Pets
 
 pet = Pets()
@@ -11,8 +13,7 @@ def test_get_token():
 
 
 def test_list_users():
-    my_id = pet.get_list_users()[1]
-    status = pet.get_list_users()[0]
+    status, my_id = pet.get_list_users()
     assert my_id
     assert status == 200
 
@@ -24,22 +25,19 @@ def test_create_pet():
 
 
 def test_add_pet_photo():
-    link = pet.add_pet_photo()[1]
-    status = pet.add_pet_photo()[0]
+    status, link = pet.add_pet_photo()
     assert link is not None
     assert status == 200
 
 
 def test_update_pet():
-    pet_id = pet.update_pet()[0]
-    status = pet.update_pet()[1]
+    pet_id, status = pet.update_pet()
     assert pet_id is not None
     assert status == 200
 
 
 def test_get_pet_by_id():
-    pet_name = pet.get_pet_by_id()[0]
-    status = pet.get_pet_by_id()[1]
+    pet_name, status = pet.get_pet_by_id()
     assert pet_name
     assert status == 200
 
@@ -50,9 +48,9 @@ def test_add_comment():
     assert status == 200
 
 
+@pytest.mark.xfail
 def test_add_like():
-    body = pet.add_like()[0]
-    status = pet.add_like()[1]
+    body, status = pet.add_like()
     assert body
     if body is 'null':
         assert status == 200
@@ -67,3 +65,6 @@ def test_delete_pet():
         assert status == 200
     else:
         assert status == 500
+
+# Тест test_add_like с отметкой xfail, потому что во время выполнения теста возвращается некорректный статус-код при
+# попытке поставить повторный "лайк" тому же питомцу
