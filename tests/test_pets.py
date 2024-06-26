@@ -1,8 +1,23 @@
 import pytest
-
 from api import Pets
 
 pet = Pets()
+
+
+def test_register_user():
+    reg_token, reg_id, status = pet.register_user()
+    assert reg_token
+    assert reg_id
+    assert status == 200
+
+
+def test_delete_user():
+    body, status = pet.delete_user()
+    assert body
+    if body == '{}':
+        assert status == 200
+    else:
+        assert status == 500
 
 
 def test_get_token():
@@ -66,5 +81,5 @@ def test_delete_pet():
     else:
         assert status == 500
 
-# Тест test_add_like с отметкой xfail, потому что во время выполнения теста возвращается некорректный статус-код при
-# попытке поставить повторный "лайк" тому же питомцу
+# Тест test_add_like с отметкой xfail, потому что во время выполнения теста
+# возвращается некорректный статус-код при попытке поставить повторный "лайк" тому же питомцу
